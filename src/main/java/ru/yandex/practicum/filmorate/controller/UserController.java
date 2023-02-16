@@ -24,7 +24,7 @@ import static ru.yandex.practicum.filmorate.utils.Common.*;
 @Slf4j
 public class UserController {
 
-    private static int counter = 0;
+    private static int counter = 1;
     private TreeMap<Integer, User> users = new TreeMap<>();
 
     @GetMapping
@@ -45,15 +45,16 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@RequestBody @Valid User user) {
-        if(user!=null) {
+        if(user!=null && users.containsKey(user.getId())) {
             validate(user);
             users.put(user.getId(), user);
             log.info("user updated: " + user);
+            if(counter<=user.getId()) {
+                counter=user.getId()+1;
+            }
+            return user;
         }
-        if(counter<=user.getId()) {
-            counter=user.getId()+1;
-        }
-        return user;
+        throw new ValidationException("unknown user: "+user);
     }
 
     private final LocalDate maxDate = LocalDate.now();
@@ -66,6 +67,8 @@ public class UserController {
             check(login == null || login.isEmpty() || login.contains(" "), "incorrect login: " + login);
             if (user.getName() == null || user.getName().isEmpty()) {
                 user.setName(login);
+            } else {
+                //check(user.getName().contains(" "), "incorrect name: "+user.getName());
             }
             check(birthday != null && birthday.isAfter(maxDate), "incorrect birthday: " + birthday);
         }catch(ValidationException e){

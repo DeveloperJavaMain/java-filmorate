@@ -24,7 +24,7 @@ import static ru.yandex.practicum.filmorate.utils.Common.*;
 @Slf4j
 public class FilmController {
 
-    private static int counter = 0;
+    private static int counter = 1;
     private TreeMap<Integer,Film> films = new TreeMap<>();
 
     @GetMapping
@@ -45,15 +45,16 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film film) {
-        if(film!=null) {
+        if(film!=null && films.containsKey(film.getId())) {
             validate(film);
             films.put(film.getId(), film);
             log.info("film updated: " + film);
+            if(counter<=film.getId()) {
+                counter=film.getId()+1;
+            }
+            return film;
         }
-        if(counter<=film.getId()) {
-            counter=film.getId()+1;
-        }
-        return film;
+        throw new ValidationException("unknown film: "+film);
     }
 
     @GetMapping("/{id}")
