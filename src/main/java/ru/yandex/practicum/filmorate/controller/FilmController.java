@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class FilmController {
 
     private static int counter = 1;
     private TreeMap<Integer,Film> films = new TreeMap<>();
+    private FilmValidator validator = new FilmValidator();
 
     @GetMapping
     public List<Film> getFilms() {
@@ -35,7 +37,7 @@ public class FilmController {
     @PostMapping
     public Film addFilm(@RequestBody @Valid Film film) {
         if(film!=null) {
-            validate(film);
+            validator.validate(film);
             film.setId(counter++);
             films.put(film.getId(), film);
             log.info("film created: " + film);
@@ -46,7 +48,7 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@RequestBody @Valid Film film) {
         if(film!=null && films.containsKey(film.getId())) {
-            validate(film);
+            validator.validate(film);
             films.put(film.getId(), film);
             log.info("film updated: " + film);
             if(counter<=film.getId()) {
@@ -62,16 +64,4 @@ public class FilmController {
         return films.get(id);
     }
 
-    private final LocalDate minDate = LocalDate.of(1895,12,28);
-    public void validate(Film film){
-        try {
-            check(film.getName() == null || film.getName().isEmpty(), "name must not be null or empty");
-            check(film.getDescription() != null && film.getDescription().length() > 200, "max description length 200");
-            check(film.getReleaseDate() != null && film.getReleaseDate().isBefore(minDate), "release date must not be before 28-12-1895");
-            check(film.getDuration() <= 0, "duration must be more then 0");
-        }catch(ValidationException e){
-            log.error(e.getMessage());
-            throw e;
-        }
-    }
 }
