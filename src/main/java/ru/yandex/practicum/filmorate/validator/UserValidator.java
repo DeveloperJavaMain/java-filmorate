@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.validator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import static ru.yandex.practicum.filmorate.utils.Common.check;
 
 @Slf4j
+@Component
 public class UserValidator {
     private final LocalDate maxDate = LocalDate.now();
 
