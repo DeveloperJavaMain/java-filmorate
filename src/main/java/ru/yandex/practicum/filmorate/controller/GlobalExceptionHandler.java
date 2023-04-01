@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.model.Response;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> handleValidationException(ValidationException e, WebRequest request) {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -23,9 +24,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(NotFoundException e, WebRequest request) {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleValidationException(Exception e, WebRequest request) {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }
