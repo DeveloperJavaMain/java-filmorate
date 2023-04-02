@@ -21,16 +21,9 @@ import java.util.TreeSet;
 @NoArgsConstructor
 public class User {
     private int id;
-    @NotNull
-    @NotEmpty
-    @Email(message = "Введенное значение не является адресом электронной почты.")
     private String email;
-    @NotNull
-    @NotBlank(message = "Логин не может быть пустым.")
-    @Pattern(regexp = "\\S*", message = "Логин не может содержать пробелы.")
     private String login;
     private String name;
-    @PastOrPresent(message = "Дата рождения не может быть в будущем. ")
     private LocalDate birthday;
     private Set<Integer> friends = new TreeSet<>();
 }
