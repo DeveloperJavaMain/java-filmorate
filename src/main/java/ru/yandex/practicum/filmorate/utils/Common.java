@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.utils;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 public class Common {

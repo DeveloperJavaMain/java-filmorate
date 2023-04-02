@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,12 +27,12 @@ public class UserService {
         return storage.getById(id);
     }
 
-    public User insert(@Valid User user) {
+    public User insert(User user) {
         validator.validate(user);
         return storage.insert(user);
     }
 
-    public User update(@Valid User user) {
+    public User update(User user) {
         validator.validate(user);
         return storage.update(user);
     }
@@ -48,7 +46,7 @@ public class UserService {
         User user = getById(userId);
         User friend = getById(friendId);
         user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        update(user);
     }
 
     public void remFriend(int userId, int friendId) {
@@ -56,6 +54,7 @@ public class UserService {
         User friend = getById(friendId);
         user.getFriends().remove(friendId);
         friend.getFriends().remove(userId);
+        update(user);
     }
 
     public List<User> commonFriends(int userId, int friendId) {
