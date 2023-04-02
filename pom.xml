@@ -37,6 +37,16 @@
             <version>1.18.24</version>
             <scope>compile</scope>
         </dependency>
+
+	    <dependency>
+    	  <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-data-jdbc</artifactId>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.h2database</groupId>
+	      <artifactId>h2</artifactId>
+	    </dependency>
+    
     </dependencies>
 
 	<build>
