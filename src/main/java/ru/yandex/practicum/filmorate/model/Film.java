@@ -13,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,12 +22,14 @@ import java.util.TreeSet;
 @NoArgsConstructor
 public class Film {
     private int id;
-    private String name;
+    private @NotNull @NotEmpty String name;
+    @Length(min = 1, max = 200, message = "Описание фильма не должно превышать 200 символов.")
     private String description;
+    @NotNull
+    @PastOrPresent(message = "Дата релиза не может быть в будущем. ")
     private LocalDate releaseDate;
+    @Min(value = 0, message = "Продолжительность фильма не может быть отрицательной.")
     private int duration;
     private Set<Integer> likes = new TreeSet<>();
-    private MpaRate mpa;
-    private Set<Genre> genres = new TreeSet<>();
 }
 

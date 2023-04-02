@@ -32,12 +32,12 @@ public class FilmService {
         return storage.getById(id);
     }
 
-    public Film insert(Film film) {
+    public Film insert(@Valid Film film) {
         validator.validate(film);
         return storage.insert(film);
     }
 
-    public Film update(Film film) {
+    public Film update(@Valid Film film) {
         validator.validate(film);
         return storage.update(film);
     }
@@ -46,14 +46,12 @@ public class FilmService {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
         film.getLikes().add(userId);
-        update(film);
     }
 
     public void remLike(int filmId, int userId) {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
         film.getLikes().remove(userId);
-        update(film);
     }
 
     public List<Film> top(int count) {
