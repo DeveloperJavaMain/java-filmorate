@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
 
     private static int counter = 1;
     private TreeMap<Integer, User> users = new TreeMap<>();
@@ -20,8 +20,8 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User getById(int id) {
-        if(!users.containsKey(id)) {
-            throw new NotFoundException("User #"+id+" not found");
+        if (!users.containsKey(id)) {
+            throw new NotFoundException("User #" + id + " not found");
         }
         return users.get(id);
     }
@@ -35,7 +35,7 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User update(User user) {
-        if(user==null) {
+        if (user == null) {
             return null;
         }
         getById(user.getId());
@@ -45,7 +45,7 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public User delete(User user) {
-        if(user==null) {
+        if (user == null) {
             return null;
         }
         getById(user.getId());

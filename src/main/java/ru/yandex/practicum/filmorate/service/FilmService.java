@@ -9,8 +9,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
-import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,12 +30,12 @@ public class FilmService {
         return storage.getById(id);
     }
 
-    public Film insert(@Valid Film film) {
+    public Film insert(Film film) {
         validator.validate(film);
         return storage.insert(film);
     }
 
-    public Film update(@Valid Film film) {
+    public Film update(Film film) {
         validator.validate(film);
         return storage.update(film);
     }
@@ -46,18 +44,20 @@ public class FilmService {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
         film.getLikes().add(userId);
+        update(film);
     }
 
     public void remLike(int filmId, int userId) {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
         film.getLikes().remove(userId);
+        update(film);
     }
 
     public List<Film> top(int count) {
         List<Film> list = getAll();
         return list.stream()
-                .sorted(Comparator.comparingInt(film->-film.getLikes().size()))
+                .sorted(Comparator.comparingInt(film -> -film.getLikes().size()))
                 .limit(count)
                 .collect(Collectors.toList());
     }

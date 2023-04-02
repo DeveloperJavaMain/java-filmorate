@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.TreeMap;
 
 @Component
-public class InMemoryFilmStorage implements FilmStorage{
+public class InMemoryFilmStorage implements FilmStorage {
 
     private static int counter = 1;
-    private TreeMap<Integer,Film> films = new TreeMap<>();
+    private TreeMap<Integer, Film> films = new TreeMap<>();
 
     @Override
     public List<Film> getAll() {
@@ -20,8 +20,8 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     @Override
     public Film getById(int id) {
-        if(!films.containsKey(id)) {
-            throw new NotFoundException("Film #"+id+" not found");
+        if (!films.containsKey(id)) {
+            throw new NotFoundException("Film #" + id + " not found");
         }
         return films.get(id);
     }
@@ -35,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     @Override
     public Film update(Film film) {
-        if(film==null) {
+        if (film == null) {
             return null;
         }
         getById(film.getId());
@@ -45,7 +45,7 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     @Override
     public Film delete(Film film) {
-        if(film==null) {
+        if (film == null) {
             return null;
         }
         getById(film.getId());
