@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,26 +28,26 @@ public class UserService {
         return storage.getById(id);
     }
 
-    public User insert(@Valid User user) {
+    public User insert(User user) {
         validator.validate(user);
         return storage.insert(user);
     }
 
-    public User update(@Valid User user) {
+    public User update(User user) {
         validator.validate(user);
         return storage.update(user);
     }
 
     public List<User> getFriends(int userId) {
         User user = getById(userId);
-        return user.getFriends().stream().map(id->getById(id)).collect(Collectors.toList());
+        return user.getFriends().stream().map(id -> getById(id)).collect(Collectors.toList());
     }
 
     public void addFriend(int userId, int friendId) {
         User user = getById(userId);
         User friend = getById(friendId);
         user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        update(user);
     }
 
     public void remFriend(int userId, int friendId) {
@@ -56,6 +55,7 @@ public class UserService {
         User friend = getById(friendId);
         user.getFriends().remove(friendId);
         friend.getFriends().remove(userId);
+        update(user);
     }
 
     public List<User> commonFriends(int userId, int friendId) {
@@ -64,7 +64,7 @@ public class UserService {
         List<Integer> list = new ArrayList<>(user.getFriends());
         Set<Integer> frndLst = friend.getFriends();
         list.retainAll(frndLst);
-        return list.stream().map(id->getById(id)).collect(Collectors.toList());
+        return list.stream().map(id -> getById(id)).collect(Collectors.toList());
     }
 
 }
